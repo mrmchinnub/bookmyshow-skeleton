@@ -9,7 +9,8 @@
     "prepare": "husky install",
     "lint": "eslint --ext .js ./assets/",
     "prettier": "prettier --write --ignore-unknown",
-    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ./assets/"
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ./assets/",
+    "test": "npm run lint"
   },
   "keywords": [
     "js",
