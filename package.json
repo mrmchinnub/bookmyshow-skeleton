@@ -18,6 +18,12 @@
     "vanilla",
     "boilerplate"
   ],
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add ."
+    ]
+  },
   "author": "xdankit",
   "license": "MIT",
   "devDependencies": {
@@ -25,7 +31,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.0",
+    "lint-staged": "^13.3.0",
     "prettier": "2.8.4"
   }
 }
