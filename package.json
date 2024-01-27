@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky",
+    "start": "snowpack dev",
     "test": "eslint . && prettier --check .",
-    "test:fix": "eslint . --fix && prettier --write ."
+    "test:fix": "eslint . --fix && prettier --write .",
+    "prepare": "husky"
   },
   "husky": {
     "hooks": {
@@ -39,6 +40,7 @@
     "htmlhint": "^1.1.4",
     "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.2.4"
+    "prettier": "^3.2.4",
+    "snowpack": "^3.8.8"
   }
 }
