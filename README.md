@@ -19,3 +19,4 @@ Follow these steps to get your development environment running:
 ```bash
 git clone https://github.com/your-username/bookmyshow-skeleton.git
 cd bookmyshow-skeleton
+```
