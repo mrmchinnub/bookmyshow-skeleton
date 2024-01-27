@@ -1,4 +1,11 @@
 {
+  "plugins": ["html"],
+  "overrides": [
+    {
+      "files": ["*.html"],
+      "processor": "html/html"
+    }
+  ],
   "semi": true,
   "singleQuote": true
 }
