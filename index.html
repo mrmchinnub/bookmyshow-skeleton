@@ -102,13 +102,13 @@
         var password = document.getElementById('password').value;
         var mobile = document.getElementById('mobile').value;
 
-        // Retrieve existing users from local storage
+        
         var users = JSON.parse(localStorage.getItem('users')) || [];
 
-        // Add new user to the array
+       
         users.push({ username: Username, password: password, mobile: mobile });
 
-        // Save the updated array back to local storage
+        
         localStorage.setItem('users', JSON.stringify(users));
       }
 
