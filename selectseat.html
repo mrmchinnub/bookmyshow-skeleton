@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seat Selection</title>
+    <style>
+      .flex-container {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        background-color: indianred;
+        border: 5px solid;
+        margin: 2% 29% 2% 25%;
+        text-align: center;
+        padding: 2% 2px 2% 2px;
+      }
+      .seat-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        column-gap: 2rem;
+        font-size: 20px;
+      }
+
+      .seat {
+        width: 50px;
+        height: 50px;
+        border: 1px solid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 5px;
+        cursor: pointer;
+      }
+
+      .showcase {
+        background-color: grey;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 0px 30% 0px 30%;
+      }
+
+      .showcase li {
+        list-style: none;
+        text-align: center;
+      }
+
+      .showcase div {
+        width: 30px;
+        height: 30px;
+        margin: 0px 10px;
+      }
+      .seat-available {
+        background-color: peachpuff;
+      }
+
+      .seat-selected {
+        background-color: lightgreen; /* Blue color for selected seats */
+      }
+
+      .seat-occupied {
+        background-color: blueviolet; /* Red color for occupied seats */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="showcase">
+      <h2>Seat Selection Page</h2>
+      <ul
+        style="
+          display: flex;
+          justify-content: center;
+          gap: 30px;
+          margin: 10px 5px;
+        "
+      >
+        <li>
+          <div class="seat-available"></div>
+          <small>Available</small>
+        </li>
+        <li>
+          <div class="seat-selected"></div>
+          <small>Selected</small>
+        </li>
+        <li>
+          <div class="seat-occupied"></div>
+          <small>Occupied</small>
+        </li>
+      </ul>
+    </div>
+    <div class="flex-container">
+      <div class="seat-selection">
+        <div class="seat-row">
+          <div class="seat">1</div>
+          <div class="seat">2</div>
+          <div class="seat">3</div>
+          <div class="seat">4</div>
+          <div class="seat">5</div>
+          <div class="seat">6</div>
+          <div class="seat">7</div>
+          <div class="seat">8</div>
+          <div class="seat">9</div>
+          <div class="seat">10</div>
+        </div>
+        <div class="seat-row">
+          <div class="seat">11</div>
+          <div class="seat">12</div>
+          <div class="seat">13</div>
+          <div class="seat">14</div>
+          <div class="seat">15</div>
+          <div class="seat">16</div>
+          <div class="seat">17</div>
+          <div class="seat">18</div>
+          <div class="seat">19</div>
+          <div class="seat">20</div>
+        </div>
+        <div class="seat-row">
+          <div class="seat">21</div>
+          <div class="seat">22</div>
+          <div class="seat">23</div>
+          <div class="seat">24</div>
+          <div class="seat">25</div>
+          <div class="seat">26</div>
+          <div class="seat">27</div>
+          <div class="seat">28</div>
+          <div class="seat">29</div>
+          <div class="seat">30</div>
+        </div>
+        <div class="seat-row">
+          <div class="seat">31</div>
+          <div class="seat">32</div>
+          <div class="seat">33</div>
+          <div class="seat">34</div>
+          <div class="seat">35</div>
+          <div class="seat">36</div>
+          <div class="seat">37</div>
+          <div class="seat">38</div>
+          <div class="seat">39</div>
+          <div class="seat">40</div>
+        </div>
+        <div class="seat-row">
+          <div class="seat">41</div>
+          <div class="seat">42</div>
+          <div class="seat">43</div>
+          <div class="seat">44</div>
+          <div class="seat">45</div>
+          <div class="seat">46</div>
+          <div class="seat">47</div>
+          <div class="seat">48</div>
+          <div class="seat">49</div>
+          <div class="seat">50</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 0px; padding: 12px; text-align: center">
+      <span
+        >Total Amount for selected seats:₹<span id="totalAmountDisplay"
+          >0</span
+        ></span
+      >
+    </div>
+    <div style="margin-top: 0px; padding: 12px; text-align: center">
+      <span>click Next to proceed payment</span>
+    </div>
+    <button
+      style="
+        margin: 5px 47%;
+        padding: 4px 12px;
+        background-color: royalblue;
+        border: solid;
+        border-radius: 4px;
+        font-size: 15px;
+        text-align: center;
+      "
+      id="next"
+    >
+      Next
+    </button>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const seats = document.querySelectorAll('.seat');
+        const nextButton = document.getElementById('next');
+        const totalAmountDisplay =
+          document.getElementById('totalAmountDisplay');
+        let selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+
+        // Highlight seats that are already selected
+        seats.forEach((seat) => {
+          if (selectedSeats.includes(seat.textContent)) {
+            seat.classList.add('seat-occupied');
+          }
+        });
+        seats.forEach((seat) => {
+          seat.addEventListener('click', () => {
+            if (!seat.classList.contains('seat-occupied')) {
+              seat.classList.toggle('seat-selected');
+              updateTotalAmount();
+            }
+          });
+        });
+
+        function updateTotalAmount() {
+          const selectedSeats = document.querySelectorAll(
+            '.seat.seat-selected',
+          );
+          const seatNumbers = Array.from(selectedSeats).map(
+            (seat) => seat.textContent,
+          );
+          localStorage.setItem('selectedSeats', JSON.stringify(seatNumbers));
+          console.log(selectedSeats);
+          const pricePerSeat = 200;
+          const totalAmount = selectedSeats.length * pricePerSeat;
+          totalAmountDisplay.textContent = totalAmount;
+        }
+
+        nextButton.addEventListener('click', () => {
+          const selectedSeats = document.querySelectorAll('.seat-selected');
+          const availableSeats = document.querySelectorAll('.seat-available');
+
+          if (selectedSeats.length > 0) {
+            alert(
+              `Total selected Seats: ${selectedSeats.length}\nSelected Seats: ${Array.from(
+                selectedSeats,
+              )
+                .map((seat) => seat.textContent)
+                .join(', ')}`,
+            );
+          } else {
+            alert('you did not selected any seat to book');
+          }
+          if (availableSeats.length === 0) {
+            alert('All seats are occupied.');
+          }
+          window.location.assign('payment.html');
+        });
+      });
+    </script>
+  </body>
+</html>

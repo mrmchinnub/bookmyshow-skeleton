@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Page</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+
+      .payment-container {
+        text-align: center;
+        padding: 20px;
+        border: 2px solid royalblue;
+        border-radius: 10px;
+        background-color: #fff;
+      }
+
+      h1 {
+        color: royalblue;
+      }
+
+      p {
+        font-size: 18px;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: royalblue;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="payment-container">
+      <h1>Payment Page</h1>
+      <div id="booking-summary">
+        <h2>Booking Summary:</h2>
+        <p id="selected-seats"></p>
+        <p id="total-amount"></p>
+      </div>
+
+      <button id="confirm-booking">Confirm Booking</button>
+      <button id="cancel-booking">Cancel</button>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+        var selectedSeatsElement = document.getElementById('selected-seats');
+        var totalAmountElement = document.getElementById('total-amount');
+        if (selectedSeats.length > 0) {
+          selectedSeatsElement.textContent =
+            'Selected Seats: ' + selectedSeats.join(', ');
+          console.log(localStorage.getItem('selectedSeats'));
+        } else {
+          selectedSeatsElement.textContent = 'No seats selected.';
+        }
+
+        var totalAmountElement = document.getElementById('total-amount');
+        var totalAmount = calculateTotalAmount(selectedSeats);
+        totalAmountElement.textContent = 'Total Amount: $' + totalAmount;
+
+        var confirmBookingButton = document.getElementById('confirm-booking');
+        confirmBookingButton.addEventListener('click', function () {
+          occupiedmark(selectedSeats);
+          localStorage.setItem('bookingConfirmed', 'true');
+          alert('Booking confirmed! Thank you for your reservation.');
+        });
+
+        // Cancel Button
+        var cancelButton = document.getElementById('cancel-booking');
+        cancelButton.addEventListener('click', function () {
+          window.location.href = 'selectseat.html';
+        });
+        function calculateTotalAmount(selectedSeats) {
+          return selectedSeats.length * 200;
+        }
+
+        function occupiedmark(selectedSeats) {
+          // Update the class and color of selected seats to indicate they are occupied
+          selectedSeats.forEach((seatNumber) => {
+            var seatElement = document.querySelector('.seat' + seatNumber);
+            if (seatElement) {
+              seatElement.classList.remove('seat-selected');
+              seatElement.classList.toggle('seat-occupied');
+              seatElement.style.backgroundColor = 'blueviolet'; // Set the purple color
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
