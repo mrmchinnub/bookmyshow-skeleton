@@ -102,13 +102,10 @@
         var password = document.getElementById('password').value;
         var mobile = document.getElementById('mobile').value;
 
-        
         var users = JSON.parse(localStorage.getItem('users')) || [];
 
-       
         users.push({ username: Username, password: password, mobile: mobile });
 
-        
         localStorage.setItem('users', JSON.stringify(users));
       }
 

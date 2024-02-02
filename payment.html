@@ -52,12 +52,32 @@
       </div>
 
       <button id="confirm-booking">Confirm Booking</button>
-      <button id="cancel-booking">Cancel</button>
+      <button id="cancel-booking" onclick="backpage()">Cancel</button>
     </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+      function backpage()
+      {
+        const removeseats =JSON.parse(localStorage.getItem('seatNumbers'));
+         const existingSelectedSeats = JSON.parse(localStorage.getItem('selectedSeats')) || [];
+        
+         
+        
+         // Remove seatNumbersToRemove from existingSelectedSeats
+        const updateSelectedSeats = existingSelectedSeats.filter(seat => !removeseats.includes(seat));
+        
+
+         // Update selectedSeats in local storage
+        localStorage.setItem('selectedSeats', JSON.stringify(updateSelectedSeats));
+
+        localStorage.removeItem('seatNumbers');
+
+        window.location.assign('selectseat.html');
+}
+      
+     
+        document.addEventListener('DOMContentLoaded', function () {
+        var selectedSeats = JSON.parse(localStorage.getItem('seatNumbers'));
         var selectedSeatsElement = document.getElementById('selected-seats');
         var totalAmountElement = document.getElementById('total-amount');
         if (selectedSeats.length > 0) {
@@ -79,11 +99,6 @@
           alert('Booking confirmed! Thank you for your reservation.');
         });
 
-        // Cancel Button
-        var cancelButton = document.getElementById('cancel-booking');
-        cancelButton.addEventListener('click', function () {
-          window.location.href = 'selectseat.html';
-        });
         function calculateTotalAmount(selectedSeats) {
           return selectedSeats.length * 200;
         }
@@ -99,7 +114,9 @@
             }
           });
         }
+       
       });
+      
     </script>
   </body>
 </html>

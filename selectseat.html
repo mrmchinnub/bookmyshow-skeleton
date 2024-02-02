@@ -186,14 +186,19 @@
         const nextButton = document.getElementById('next');
         const totalAmountDisplay =
           document.getElementById('totalAmountDisplay');
-        let selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+        let selectedSeats =
+          JSON.parse(localStorage.getItem('selectedSeats')) || [];
 
         // Highlight seats that are already selected
         seats.forEach((seat) => {
-          if (selectedSeats.includes(seat.textContent)) {
+          const seatNumber = parseInt(seat.textContent.trim());
+          if (selectedSeats.includes(seatNumber)) {
             seat.classList.add('seat-occupied');
+          } else {
+            seat.classList.add('seat-available');
           }
         });
+
         seats.forEach((seat) => {
           seat.addEventListener('click', () => {
             if (!seat.classList.contains('seat-occupied')) {
@@ -204,37 +209,24 @@
         });
 
         function updateTotalAmount() {
-          const selectedSeats = document.querySelectorAll(
-            '.seat.seat-selected',
-          );
-          const seatNumbers = Array.from(selectedSeats).map(
-            (seat) => seat.textContent,
-          );
-          localStorage.setItem('selectedSeats', JSON.stringify(seatNumbers));
-          console.log(selectedSeats);
+          const selectedSeats = document.querySelectorAll('.seat-selected');
+          const seatNumbers = Array.from(selectedSeats)
+            .map((seat) => parseInt(seat.textContent.trim()))
+            .filter((seatNumber) => !isNaN(seatNumber));
+
+          const existingSelectedSeats =
+            JSON.parse(localStorage.getItem('selectedSeats')) || [];
+          const totalSeats = existingSelectedSeats.concat(seatNumbers);
+
+          localStorage.setItem('seatNumbers', JSON.stringify(seatNumbers));
+          localStorage.setItem('selectedSeats', JSON.stringify(totalSeats));
+
           const pricePerSeat = 200;
-          const totalAmount = selectedSeats.length * pricePerSeat;
+          const totalAmount = seatNumbers.length * pricePerSeat;
           totalAmountDisplay.textContent = totalAmount;
         }
 
         nextButton.addEventListener('click', () => {
-          const selectedSeats = document.querySelectorAll('.seat-selected');
-          const availableSeats = document.querySelectorAll('.seat-available');
-
-          if (selectedSeats.length > 0) {
-            alert(
-              `Total selected Seats: ${selectedSeats.length}\nSelected Seats: ${Array.from(
-                selectedSeats,
-              )
-                .map((seat) => seat.textContent)
-                .join(', ')}`,
-            );
-          } else {
-            alert('you did not selected any seat to book');
-          }
-          if (availableSeats.length === 0) {
-            alert('All seats are occupied.');
-          }
           window.location.assign('payment.html');
         });
       });
