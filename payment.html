@@ -56,27 +56,28 @@
     </div>
 
     <script>
-      function backpage()
-      {
-        const removeseats =JSON.parse(localStorage.getItem('seatNumbers'));
-         const existingSelectedSeats = JSON.parse(localStorage.getItem('selectedSeats')) || [];
-        
-         
-        
-         // Remove seatNumbersToRemove from existingSelectedSeats
-        const updateSelectedSeats = existingSelectedSeats.filter(seat => !removeseats.includes(seat));
-        
+      function backpage() {
+        const removeseats = JSON.parse(localStorage.getItem('seatNumbers'));
+        const existingSelectedSeats =
+          JSON.parse(localStorage.getItem('selectedSeats')) || [];
 
-         // Update selectedSeats in local storage
-        localStorage.setItem('selectedSeats', JSON.stringify(updateSelectedSeats));
+        // Remove seatNumbersToRemove from existingSelectedSeats
+        const updateSelectedSeats = existingSelectedSeats.filter(
+          (seat) => !removeseats.includes(seat),
+        );
+
+        // Update selectedSeats in local storage
+        localStorage.setItem(
+          'selectedSeats',
+          JSON.stringify(updateSelectedSeats),
+        );
 
         localStorage.removeItem('seatNumbers');
 
         window.location.assign('selectseat.html');
-}
-      
-     
-        document.addEventListener('DOMContentLoaded', function () {
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
         var selectedSeats = JSON.parse(localStorage.getItem('seatNumbers'));
         var selectedSeatsElement = document.getElementById('selected-seats');
         var totalAmountElement = document.getElementById('total-amount');
@@ -114,9 +115,7 @@
             }
           });
         }
-       
       });
-      
     </script>
   </body>
 </html>
