@@ -90,6 +90,11 @@
         >
           Sign Up
         </button>
+        <div
+          id="errorMessage"
+          class="error-message"
+          style="color: red; margin-top: 10px; text-align: center"
+        ></div>
       </form>
     </div>
     <div style="text-align: center; margin-top: 50px">
@@ -114,6 +119,16 @@
         var password = document.getElementById('password').value;
         var mobile = document.getElementById('mobile').value;
 
+        var errorMessage = document.getElementById('errorMessage');
+
+        errorMessage.innerHTML = '';
+
+        // Check if any field is not filled
+        if (Username === '' || password === '' || mobile === '') {
+          errorMessage.innerHTML = 'Please fill all the required fields.';
+          return;
+        }
+        //redirect into next page after fillng all the required fields
         if (Username !== '' && password !== '' && mobile !== '') {
           store();
           window.location.assign('signin.html');

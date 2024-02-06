@@ -56,12 +56,12 @@
     </div>
 
     <script>
+      //function for processing of cancel button
       function backpage() {
         const removeseats = JSON.parse(localStorage.getItem('seatNumbers'));
         const existingSelectedSeats =
           JSON.parse(localStorage.getItem('selectedSeats')) || [];
 
-        // Remove seatNumbersToRemove from existingSelectedSeats
         const updateSelectedSeats = existingSelectedSeats.filter(
           (seat) => !removeseats.includes(seat),
         );
@@ -76,7 +76,7 @@
 
         window.location.assign('selectseat.html');
       }
-
+      //Event for getting total seats and amount for selected seats
       document.addEventListener('DOMContentLoaded', function () {
         var selectedSeats = JSON.parse(localStorage.getItem('seatNumbers'));
         var selectedSeatsElement = document.getElementById('selected-seats');
@@ -84,36 +84,47 @@
         if (selectedSeats.length > 0) {
           selectedSeatsElement.textContent =
             'Selected Seats: ' + selectedSeats.join(', ');
-          console.log(localStorage.getItem('selectedSeats'));
+          console.log(localStorage.getItem('seatNumbers'));
         } else {
           selectedSeatsElement.textContent = 'No seats selected.';
         }
-
+        //calculating the amount for slected seats
         var totalAmountElement = document.getElementById('total-amount');
         var totalAmount = calculateTotalAmount(selectedSeats);
         totalAmountElement.textContent = 'Total Amount: $' + totalAmount;
-
+        //activation of confirm booking  button
         var confirmBookingButton = document.getElementById('confirm-booking');
         confirmBookingButton.addEventListener('click', function () {
-          occupiedmark(selectedSeats);
+          var seatNumbers = JSON.parse(localStorage.getItem('seatNumbers'));
+          occupiedmark(seatNumbers);
+
           localStorage.setItem('bookingConfirmed', 'true');
           alert('Booking confirmed! Thank you for your reservation.');
+          return window.location.assign('selectseat.html');
         });
 
         function calculateTotalAmount(selectedSeats) {
           return selectedSeats.length * 200;
         }
 
-        function occupiedmark(selectedSeats) {
-          // Update the class and color of selected seats to indicate they are occupied
-          selectedSeats.forEach((seatNumber) => {
+        function occupiedmark(seatNumbers) {
+          var seatNumbers = JSON.parse(localStorage.getItem('seatNumbers'));
+          console.log(seatNumbers);
+          // Update the selected seats to indicate they are occupied
+          seatNumbers.forEach((seatNumber) => {
             var seatElement = document.querySelector('.seat' + seatNumber);
             if (seatElement) {
               seatElement.classList.remove('seat-selected');
               seatElement.classList.toggle('seat-occupied');
-              seatElement.style.backgroundColor = 'blueviolet'; // Set the purple color
+              seatElement.style.backgroundColor = 'blueviolet';
             }
           });
+          clearSelectedSeats();
+        }
+        function clearSelectedSeats() {
+          selectedSeats = [];
+
+          localStorage.removeItem('seatNumbers');
         }
       });
     </script>

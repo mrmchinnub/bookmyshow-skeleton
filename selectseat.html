@@ -57,11 +57,11 @@
       }
 
       .seat-selected {
-        background-color: lightgreen; /* Blue color for selected seats */
+        background-color: lightgreen;
       }
 
       .seat-occupied {
-        background-color: blueviolet; /* Red color for occupied seats */
+        background-color: blueviolet;
       }
     </style>
   </head>
@@ -157,29 +157,42 @@
 
     <div style="margin-top: 0px; padding: 12px; text-align: center">
       <span
-        >Total Amount for selected seats:₹<span id="totalAmountDisplay"
-          >0</span
-        ></span
+        >Total Amount for selected seats:₹<span id="totalAmountDisplay">0</span>
+      </span>
+    </div>
+    <div class="noseat" style="display: block">
+      <p
+        style="
+          margin-top: 0px;
+          padding: 12px;
+          text-align: center;
+          font-size: 25px;
+          font-style: oblique;
+          color: crimson;
+        "
       >
+        you did not select any seat to book
+      </p>
     </div>
-    <div style="margin-top: 0px; padding: 12px; text-align: center">
-      <span>click Next to proceed payment</span>
+    <div id="seatSelectionContainer" style="display: none">
+      <div style="margin-top: 0px; padding: 12px; text-align: center">
+        <span>Click Next to proceed payment</span>
+      </div>
+      <button
+        style="
+          margin: 5px 47%;
+          padding: 4px 12px;
+          background-color: royalblue;
+          border: solid;
+          border-radius: 4px;
+          font-size: 15px;
+          text-align: center;
+        "
+        id="next"
+      >
+        Next
+      </button>
     </div>
-    <button
-      style="
-        margin: 5px 47%;
-        padding: 4px 12px;
-        background-color: royalblue;
-        border: solid;
-        border-radius: 4px;
-        font-size: 15px;
-        text-align: center;
-      "
-      id="next"
-    >
-      Next
-    </button>
-
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const seats = document.querySelectorAll('.seat');
@@ -198,7 +211,7 @@
             seat.classList.add('seat-available');
           }
         });
-
+        //click operation for seat selection
         seats.forEach((seat) => {
           seat.addEventListener('click', () => {
             if (!seat.classList.contains('seat-occupied')) {
@@ -207,26 +220,56 @@
             }
           });
         });
-
+        //Function for updating amount for selected seats
         function updateTotalAmount() {
           const selectedSeats = document.querySelectorAll('.seat-selected');
           const seatNumbers = Array.from(selectedSeats)
             .map((seat) => parseInt(seat.textContent.trim()))
             .filter((seatNumber) => !isNaN(seatNumber));
-
-          const existingSelectedSeats =
+          let existingSelectedSeats =
             JSON.parse(localStorage.getItem('selectedSeats')) || [];
-          const totalSeats = existingSelectedSeats.concat(seatNumbers);
+
+          existingSelectedSeats = existingSelectedSeats.filter(
+            (seatNumber) => !seatNumbers.includes(seatNumber),
+          );
 
           localStorage.setItem('seatNumbers', JSON.stringify(seatNumbers));
-          localStorage.setItem('selectedSeats', JSON.stringify(totalSeats));
 
-          const pricePerSeat = 200;
+          const pricePerSeat = 150;
           const totalAmount = seatNumbers.length * pricePerSeat;
           totalAmountDisplay.textContent = totalAmount;
+          console.log(seatNumbers);
+          //making the button disable when we didn't select any seat to occupy
+          seatSelectionContainer.style.display =
+            seatNumbers.length > 0 ? 'block' : 'none';
+          const noseat = document.querySelector('.noseat');
+          noseat.style.display = seatNumbers.length === 0 ? 'block' : 'none';
         }
-
+        //Event for working of next button to proceed payment
         nextButton.addEventListener('click', () => {
+          const selectedseats = localStorage.getItem('seatNumbers');
+          console.log(selectedseats);
+          if (selectedseats && selectedseats.length > 0) {
+            const dselectedseats = selectedseats.split(',');
+            if (dselectedseats.length > 0) {
+              alert(
+                `Total selected Seats: ${dselectedseats.length}\nSelected Seats: ${dselectedseats.join(',')}`,
+              );
+            } else {
+              alert('you did not selected any seat to book');
+            }
+          } else {
+            alert('you did not selected any seat to book');
+            return window.location.assign('selectseat.html');
+          }
+          let seatNumbers = JSON.parse(localStorage.getItem('seatNumbers'));
+          let existingSelectedSeats =
+            JSON.parse(localStorage.getItem('selectedSeats')) || [];
+          //updating the newly selected seats seats in local storage
+          const totalSeats = [...existingSelectedSeats, ...seatNumbers];
+
+          localStorage.setItem('selectedSeats', JSON.stringify(totalSeats));
+
           window.location.assign('payment.html');
         });
       });
