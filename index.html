@@ -95,10 +95,13 @@
           class="error-message"
           style="color: red; margin-top: 10px; text-align: center"
         ></div>
+
+        <div style="text-align: center; margin-top: 20px">
+          <span
+            >Already have an account? <a href="signin.html">Sign In</a></span
+          >
+        </div>
       </form>
-    </div>
-    <div style="text-align: center; margin-top: 50px">
-      <span>Already have an account? <a href="signin.html">Sign In</a></span>
     </div>
 
     <script>
@@ -112,6 +115,14 @@
         users.push({ username: Username, password: password, mobile: mobile });
 
         localStorage.setItem('users', JSON.stringify(users));
+      }
+
+      function userexists(Username) {
+        var users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Find the user with the specified username
+        var existingUser = users.find((user) => user.username === Username);
+        return existingUser !== undefined;
       }
 
       function validsignup() {
@@ -128,6 +139,11 @@
           errorMessage.innerHTML = 'Please fill all the required fields.';
           return;
         }
+
+        if (userexists(Username)) {
+          return alert('username  already exists');
+        }
+
         //redirect into next page after fillng all the required fields
         if (Username !== '' && password !== '' && mobile !== '') {
           store();
